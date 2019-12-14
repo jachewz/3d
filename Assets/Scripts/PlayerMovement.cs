@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float DashSpeed = 10f;
     public float MaxDashTime = 3f;
     public Vector3 Drag;
+    public int MaxJumps = 2;
 
     float camRayLength = 100f;
     int floorMask;
@@ -17,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController _controller;
     private Vector3 _velocity;
     private float _currentDashTime;
-    private bool _isGrounded = true;
+    private int _jumps = 0;
 
 
     void Start()
@@ -34,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
         if (_controller.isGrounded)
         {
             _velocity.y = 0f;
+            _jumps = 0;
         }
 
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
@@ -41,9 +43,11 @@ public class PlayerMovement : MonoBehaviour
         if (move != Vector3.zero)
             transform.forward = move;
 
-        if (Input.GetButtonDown("Jump") && _isGrounded)
+        if (Input.GetButtonDown("Jump") && _jumps < MaxJumps)
+        {
+            _jumps++;
             _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-
+        }
 
         LookAtMouse();
 
