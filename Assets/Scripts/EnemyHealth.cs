@@ -13,6 +13,7 @@ public class EnemyHealth : MonoBehaviour
     public void Damage(float damageValue)
     {
         HitPoints -= damageValue;
+        Debug.Log("Dealt " + damageValue + "damage, enemy current hp:" + HitPoints);
         if (HitPoints <= 0)
         {
             Kill();
